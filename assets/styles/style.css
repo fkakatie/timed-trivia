@@ -1,0 +1,61 @@
+/* BASICS */
+
+body {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    font-family: 'DM Mono', monospace;
+    font-size: 16px;
+}
+
+.container {
+    width: 920px;
+    max-width: 92%;
+    margin: 0 auto;
+}
+
+/* HEADER */
+
+header {
+    background: #252525;
+}
+
+header .container {
+    display: flex;
+    /* justify-content: space-between; */
+}
+
+header a {
+    padding: 1em;
+    background: #2d2d2d;
+    color: #939696;
+    text-decoration: none;
+}
+
+header a:hover {
+    background: #222;
+    color: #cbcbcb;
+}
+
+header a.active {
+    background: #1e1e1e;
+    color: #fff;
+}
+
+header a.active:hover {
+    color: #cbcbcb;
+}
+
+/* ICONS */
+
+i.material-icons { 
+    font-size: inherit;
+    transform: translateY(0.15em);
+}
+
+i.material-icons.blue {
+    color: #519aba;
+}
+
+i.material-icons.orange {
+    color: #e37830;
+}
