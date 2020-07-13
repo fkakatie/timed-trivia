@@ -4,25 +4,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Timed Trivia</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="assets/styles/reset.css" />
     <link rel="stylesheet" href="assets/styles/style.css" />
   </head>
   <body>
     <header>
-        <div class="container">
-            <a href="/" class="active">
-                <h1>
-                    <i class="material-icons blue">timer</i> Timed Trivia
-                </h1>
-            </a>
-            <a href="/highscores.html">
-                <i class="material-icons orange">format_list_numbered</i> Highscores
-            </a>
-        </div>
+      <div class="container">
+        <a href="/" class="active">
+          <h1><i class="material-icons blue">timer</i> Timed Trivia</h1>
+        </a>
+        <a href="/highscores.html">
+          <i class="material-icons orange">format_list_numbered</i> Highscores
+        </a>
+      </div>
     </header>
-    <section></section>
+    <section id="about">
+      <div class="container">
+        <p>
+          Test your computer knowledge by answering as many questions as you can before time runs out. Wrong answers will reduce your time remaining, so think quickly and choose carefully!
+        </p>
+        <button id="start">Start Timed Trivia <i class="material-icons">chevron_right</i></button>
+      </div>
+    </section>
   </body>
   <script src="assets/scripts/app.js"></script>
 </html>

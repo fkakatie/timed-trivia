@@ -1,10 +1,14 @@
 /* BASICS */
 
+body, button {
+    font-family: 'DM Mono', monospace;
+    font-size: 16px;
+    line-height: 1.5em;
+}
+
 body {
     background: #1e1e1e;
     color: #d4d4d4;
-    font-family: 'DM Mono', monospace;
-    font-size: 16px;
 }
 
 .container {
@@ -21,13 +25,12 @@ header {
 
 header .container {
     display: flex;
-    /* justify-content: space-between; */
 }
 
 header a {
     padding: 1em;
     background: #2d2d2d;
-    color: #939696;
+    color: #969696;
     text-decoration: none;
 }
 
@@ -58,4 +61,26 @@ i.material-icons.blue {
 
 i.material-icons.orange {
     color: #e37830;
+}
+
+/* HOME PAGE */
+
+section#about {
+    padding: 1em 0;
+    /* background: green; */
+}
+
+section#about button#start {
+    margin-top: 1em;
+    padding: 0.5em 1em;
+    border-style: none;
+    border-radius: 0.5em;
+    background: #cbcb41;
+    color: #222;
+}
+
+section#about button#start:hover {
+    filter: brightness(0.5);
+    transition: 0.2s;
+    cursor: pointer;
 }
