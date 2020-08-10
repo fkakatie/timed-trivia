@@ -1,86 +1,146 @@
 /* BASICS */
 
-body, button {
-    font-family: 'DM Mono', monospace;
-    font-size: 16px;
-    line-height: 1.5em;
+body,
+button {
+  font-family: "DM Mono", monospace;
+  font-size: 16px;
+  line-height: 1.5em;
 }
 
 body {
-    background: #1e1e1e;
-    color: #d4d4d4;
+  background: #1e1e1e;
+  color: #d4d4d4;
+}
+
+button {
+  padding: 0.5em 1em;
+  border-style: none;
+  border-radius: 0.5em;
+  cursor: pointer;
+}
+
+button:enabled:hover,
+button:active,
+button:target,
+button:focus {
+  outline-style: none;
+  filter: brightness(1.2);
+  transition: 0.2s;
 }
 
 .container {
-    width: 920px;
-    max-width: 92%;
-    margin: 0 auto;
+  width: 920px;
+  max-width: 92%;
+  margin: 0 auto;
+}
+
+.hide {
+  display: none;
 }
 
 /* HEADER */
 
 header {
-    background: #252525;
+  background: #252525;
 }
 
 header .container {
-    display: flex;
+  display: flex;
 }
 
 header a {
-    padding: 1em;
-    background: #2d2d2d;
-    color: #969696;
-    text-decoration: none;
+  padding: 1em;
+  background: #2d2d2d;
+  color: #969696;
+  text-decoration: none;
 }
 
 header a:hover {
-    background: #222;
-    color: #cbcbcb;
+  background: #222;
+  color: #cbcbcb;
 }
 
 header a.active {
-    background: #1e1e1e;
-    color: #fff;
+  background: #1e1e1e;
+  color: #fff;
 }
 
 header a.active:hover {
-    color: #cbcbcb;
+  color: #cbcbcb;
 }
 
 /* ICONS */
 
-i.material-icons { 
-    font-size: inherit;
-    transform: translateY(0.15em);
+i.material-icons {
+  font-size: inherit;
+  transform: translateY(0.15em);
 }
 
 i.material-icons.blue {
-    color: #519aba;
+  color: #519aba;
 }
 
 i.material-icons.orange {
-    color: #e37830;
+  color: #e37830;
 }
 
 /* HOME PAGE */
 
-section#about {
-    padding: 1em 0;
-    /* background: green; */
+section#main {
+  padding: 1em 0;
+  /* background: green; */
 }
 
-section#about button#start {
-    margin-top: 1em;
-    padding: 0.5em 1em;
-    border-style: none;
-    border-radius: 0.5em;
-    background: #cbcb41;
-    color: #222;
+section#main button#start,
+section#main button.next {
+  margin-top: 1em;
+  margin-right: 0.5em;
+  margin-bottom: 0.5em;
+  background: #cbcb41;
+  color: #222;
 }
 
-section#about button#start:hover {
-    filter: brightness(0.5);
-    transition: 0.2s;
-    cursor: pointer;
+div#answerContainer {
+  margin-top: 1em;
+}
+
+div#question button.answerBtn {
+  margin-right: 0.5em;
+  margin-bottom: 0.5em;
+  color: #1e1e1e;
+}
+
+div#question button.yellow {
+  background: #dcdcaa;
+}
+
+div#question button.green {
+  background: #6a9955;
+}
+
+div#question button.blue {
+  background: #569cd6;
+}
+
+div#question button.pink {
+  background: #c586c0;
+}
+
+div#question button:disabled {
+  /* filter: saturate(0.05); */
+  background: #797979;
+  cursor: none;
+}
+
+div#question button.correct {
+    /* border: 5px solid red; */
+    -webkit-box-shadow: 0px 0px 10px 3px rgba(102,153,83, 0.8);
+    -moz-box-shadow: 0px 0px 10px 3px rgba(102,153,83, 0.8);
+    box-shadow: 0px 0px 10px 3px rgba(102,153,83, 0.8);
+}
+
+div#question button.incorrect {
+  -webkit-box-shadow: 0px 0px 10px 3px rgba(169, 92, 104, 0.8);
+  -moz-box-shadow: 0px 0px 10px 3px rgba(169, 92, 104, 0.8);
+  box-shadow: 0px 0px 10px 3px rgba(169, 92, 104, 0.8);
 }
