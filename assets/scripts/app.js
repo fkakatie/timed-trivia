@@ -1,30 +1,100 @@
 const $mainDiv = document.getElementById(`about`);
+const $mainSection = document.getElementById(`main`);
 const $startBtn = document.getElementById(`start`);
 const $aboutContainer = document.querySelectorAll(
   `section#main > div.container`
 );
-let round = 0; // each round will get harder
+let round = 1; // each round will get harder
 let qCount = 0; // question counter
 let gameQs; // will hold all game qs
 let correctA = 0;
-let incorrectA = 0;
+
+// setup timer
+
+let timer = {
+  time: 120,
+  isRunning: false,
+  start: function() {
+    if (!this.isRunning) {
+      this.isRunning = true;
+      console.log(`timer started`);
+      buildTimer();
+      timer.decrement();
+    }
+  },
+  stop: function() {
+    if (this.time < 0) {
+      timer.reset();
+    }
+    this.isRunning = false;
+    console.log(`timer stopped`);
+    const $timerBar = document.getElementById(`timerBar`);
+    setTimeout(() => {
+      $timerBar.remove()
+    }, 1000);
+  },
+  forceStop: function() {
+    if (this.time < 0) {
+      timer.reset();
+    }
+    this.isRunning = false;
+    const $timerBar = document.getElementById(`timerBar`);
+    $timerBar.remove();
+  },
+  decrement: function() {
+    if (this.isRunning) {
+      setTimeout(() => {
+        this.time--;
+        let width = Math.round((this.time / 120) * 100);
+        const $timer = document.getElementById(`timer`);
+        $timer.style.width = `${width}%`
+        console.log(this.time);
+        if (this.time <= 0) {
+          this.time = 0;
+          timer.stop();
+          setTimeout(() => {
+            endGame();
+          }, 1000);
+        }
+        timer.decrement();
+      }, 1000)
+    }
+  },
+  reset: function() {
+    this.time = 120;
+  }, 
+  restart: function() {
+    timer.reset();
+    timer.start();
+  }
+}
+
+const buildTimer = () => {
+  const $timerBar = document.createElement(`div`);
+  $timerBar.setAttribute(`id`, `timerBar`);
+  const $timer = document.createElement(`div`);
+  $timer.setAttribute(`id`, `timer`);
+  $timerBar.appendChild($timer);
+  $mainSection.prepend($timerBar);
+}
 
 const startTrivia = () => {
   // console.log(`trivia started`);
   $mainDiv.setAttribute(`class`, `hide`);
   openTriviaReq();
+  timer.restart();
 };
 
 const openTriviaURL = (round) => {
   let difficulty;
   switch (round) {
-    case 0:
+    case 1:
       difficulty = `easy`;
       break;
-    case 1:
+    case 2:
       difficulty = `medium`;
       break;
-    case 2:
+    case 3:
       difficulty = `hard`;
       break;
     default:
@@ -32,7 +102,7 @@ const openTriviaURL = (round) => {
       return;
   }
   console.log(`difficulty:`, difficulty, round);
-  return `https://opentdb.com/api.php?amount=3&category=18&difficulty=${difficulty}&type=multiple`;
+  return `https://opentdb.com/api.php?amount=10&category=18&difficulty=${difficulty}&type=multiple`;
 };
 
 const openTriviaReq = () => {
@@ -68,6 +138,7 @@ const iterateQs = (questions) => {
     } = questions[qCount];
     genQ(question, correct, incorrect);
   } else {
+    timer.forceStop();
     endGame();
   }
 };
@@ -163,7 +234,7 @@ const wrongA = (target) => {
   target.classList.add(`incorrect`);
   // console.log(`passed target:`, target)
   console.log(`wrong answer`);
-  incorrectA++;
+  timer.time = timer.time - 12;
   addEvaluation("Wrong");
 };
 
@@ -179,46 +250,59 @@ const addEvaluation = (eval) => {
   const $pEval = document.createElement(`p`);
   $pEval.innerText = `${eval} answer!`;
   $aboutContainer[0].appendChild($pEval);
-  nextQ(gameQs);
+  setTimeout(() => nextQ(gameQs), 1000 * 5);
 }
 
 const nextQ = (questions) => {
-  // console.log(`nextQ running`);
-  qCount++;
-  iterateQs(gameQs);
+  if (timer.isRunning) {
+    console.log(`nextQ running`);
+    qCount++;
+    iterateQs(gameQs);
+  }
 }
 
 const endGame = () => {
   clearMain();
   // console.log(`end of game`);
-  console.log(`  wins:`, correctA, `| losses:`, incorrectA);
+  let percentage = Math.round((correctA / 10) * 100);
+  console.log(percentage, `%`);
+  let finalScore = (percentage + timer.time) * round;
+  console.log(`final score:`, finalScore);
+  console.log(round, `round`);
   const $resultsContainer = document.createElement(`div`);
   $resultsContainer.setAttribute(`id`, `results`);
-  const $requestsTag = document.createElement(`p`);
-  $resultsContainer.innerHTML = `${Math.round((correctA / 3) * 100)}%`;
-  let $btnContainer = buildBtnContainer();
-  $resultsContainer.appendChild($requestsTag);
+  const $resultsHeader = document.createElement(`h2`);
+  $resultsHeader.innerText = `End of level ${round} quiz!`;
+  const $resultsTag = document.createElement(`p`);
+  $resultsTag.innerHTML = `You scored ${percentage}% with ${timer.time} seconds remaining for a final score of <strong>${finalScore}</strong>!`;
+  let $btnContainer = buildBtnContainer(finalScore);
+  $resultsContainer.appendChild($resultsHeader);
+  $resultsContainer.appendChild($resultsTag);
   $resultsContainer.appendChild($btnContainer);
   $aboutContainer[0].appendChild($resultsContainer);
 }
 
-const buildBtnContainer = () => {
+const buildBtnContainer = (finalScore) => {
   const $btnDivTag = document.createElement(`div`);
   $btnDivTag.setAttribute(`id`, `btnContainer`);
-  let $againBtn = buildReplayBtn(`Again`);
-  let $nextBtn = buildReplayBtn(`Next Round`);
+  let $againBtn = buildReplayBtn(`Again`, `replay`);
+  let $nextBtn = buildReplayBtn(`Next Round`, `chevron_right`);
+  let $saveScoreBtn = buildPostBtn(finalScore);
+  // $saveScoreBtn.innerHTML = `Post to Highscores <i class="material-icons">games</i>`
+  // $saveScoreBtn.setAttribute(`id`, `postScore`);
+  $btnDivTag.appendChild($saveScoreBtn);
   $btnDivTag.appendChild($againBtn);
-  if (round < 2) {
+  if (round < 3) {
     $btnDivTag.appendChild($nextBtn);
   }
   return $btnDivTag;
 }
 
-const buildReplayBtn = (btnText) => {
+const buildReplayBtn = (btnText, icon) => {
   // console.log(round);
   const $btnTag = document.createElement(`button`);
   $btnTag.setAttribute(`class`, `next`);
-  $btnTag.innerHTML = `Play ${btnText} <i class="material-icons">chevron_right</i>`;
+  $btnTag.innerHTML = `Play ${btnText} <i class="material-icons">${icon}</i>`;
   $btnTag.addEventListener(`click`, (e) => {
       e.preventDefault();
       let thisBtn = e.target.innerHTML;
@@ -232,14 +316,26 @@ const buildReplayBtn = (btnText) => {
   return $btnTag;
 }
 
+const buildPostBtn = (finalScore) => {
+  let $postScoreBtn = document.createElement(`button`);
+  $postScoreBtn.innerHTML = `Post to Highscores <i class="material-icons">games</i>`
+  $postScoreBtn.setAttribute(`id`, `postScore`);
+  $postScoreBtn.addEventListener(`click`, (e) => {
+    e.preventDefault();
+    console.log(finalScore);
+  })
+  return $postScoreBtn;
+}
+
 const nextRound = () => {
   console.log(`round:`, round);
-  if (round < 3) {
+  if (round <= 4) {
     qCount = 0; // reset question counter
     gameQs.length = 0; // empty game Qs array
     correctA = 0; // reset correct As
     incorrectA = 0; // reset incorrect Qs
     clearMain();
+    timer.restart();
     openTriviaReq();
   } else {
     console.log(`round:`, round);
